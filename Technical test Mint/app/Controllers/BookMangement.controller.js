@@ -34,8 +34,13 @@ exports.findGenres= async (req, res, next) => {
      
   }
   console.log(elements);
+  let js={};
+  for (let index = 0; index < elements.length; index++) {
+    const element = elements[index];
+    js[index]=({key:index,value:element});
+  }
     await browser.close();
-  res.status(200).json({elements});
+  res.status(200).json({js});
   };
 
 
