@@ -1,0 +1,17 @@
+const controller = require("../controllers/BookMangement.controller");
+
+
+
+module.exports = function(app) {
+    app.use(function(req, res, next) {
+      res.header(
+        "Access-Control-Allow-Headers",
+        "x-access-token, Origin, Content-Type, Accept"
+      );
+      next();
+    });
+
+    app.get('/book/getGenres',controller.findGenres);
+    app.get('/book/randomBook/:choice',controller.randomBook);
+    
+};

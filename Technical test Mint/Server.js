@@ -1,40 +1,21 @@
-const puppeteer = require('puppeteer');
+const express = require("express");
+const bodyParser = require("body-parser");
 
-(async () => {
-  const browser = await puppeteer.launch({
-    headless: false,
-    defaultViewport: false,
-    userDataDir: "./tmp",
-  });
-  const page = await browser.newPage();
+const app = express();
 
-  await page.goto('https://www.goodreads.com/choiceawards/best-books-2020', {
-    waitUntil: 'networkidle2',
-  });
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.set({ 'content-type': 'application/json; charset=utf-8' });
+  next();
+});
 
-  const productsHandles = await page.$$(
-    ".clearFix"
-  );
-console.log(productsHandles);
-let allelements=false;
-let i=0;
+app.use(bodyParser.urlencoded({ extended: true }));
 
-  for (const producthandle of productsHandles) {
-    let category = "Null";
-    try {
-      category = await page.evaluate(
-        (el) => el.querySelector(" div > div > a > h4").textContent,
-        producthandle
-      );
-      console.log(category);
-    } catch (error) {
-      console.error(error);
-    }
+require("./app/routes/BookMangement.routes")(app);
 
-   
-}
-  await browser.close();
-})();
-
-
-
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
