@@ -1,7 +1,7 @@
 # TechnicalTest
 Technical Test 
 
-first in terminal write cd Technical test Mint
+first in terminal write cd Technical test 
 
 second npm install than npm start
 
